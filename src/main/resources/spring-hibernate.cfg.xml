@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:property-placeholder
+            location="classpath:hibernate/hibernate-dev.properties"
+            ignore-unresolvable="true"/>
+    <!--session 工厂-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="connection.autocommit">${hibernate.autocommit}</prop>
+                <prop key="connection.release_mode">${hibernate.release_mode}</prop>
+                <prop key="jdbc.fetch_size">${hibernate.fetch_size}</prop>
+                <prop key="jdbc.batch_size">${hibernate.batch_size}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <!--自动把实体转化成表-->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>in.hocg</value>
+            </list>
+        </property>
+    </bean>
+    <!--数据库连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${db.driver}" />
+        <property name="jdbcUrl" value="${db.url}" />
+        <property name="user" value="${db.username}" />
+        <property name="password" value="${db.password}" />
+        <property name="initialPoolSize" value="3" />
+        <property name="maxPoolSize" value="30" />
+        <property name="minPoolSize" value="2" />
+        <property name="maxIdleTime" value="90" />
+        <property name="maxStatements" value="0" />
+        <property name="idleConnectionTestPeriod" value="120" />
+        <property name="acquireRetryAttempts" value="30" />
+        <property name="breakAfterAcquireFailure" value="false" />
+        <property name="acquireIncrement" value="1" />
+        <property name="testConnectionOnCheckout" value="true" />
+        <property name="preferredTestQuery" value="select 1"/>
+    </bean>
+    <!-- 配置Hibernate事务管理器 -->
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <!-- 配置事务异常封装 -->
+    <bean id="persistenceExceptionTranslationPostProcessor"
+          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+    <!--开启@Transaction注解支持-->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+</beans>
