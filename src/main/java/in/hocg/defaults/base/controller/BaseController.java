@@ -3,7 +3,8 @@ package in.hocg.defaults.base.controller;
 import com.google.gson.Gson;
 import in.hocg.app.utils.Return;
 import in.hocg.defaults.Custom;
-import in.hocg.defaults.utils.LangKit;
+import in.hocg.utils.Lang;
+import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,16 +14,14 @@ import java.io.IOException;
  * (๑`灬´๑)
  *
  * @author hocgin(admin@hocg.in)
- *         <p>
- *         <p>
- *         <p>
- *         --------------------
- *         Created 16-8-26.
+ * 子类Controller需声明 @Controller
+ * Spring的@Controller无子类继承效果
  */
+@Controller
 public abstract class BaseController {
 
     public String redirectJump(HttpServletRequest request, String def) throws IOException {
-        return String.format("redirect:%s", LangKit.ifNull(request.getParameter(Custom.RequestParams.JUMP), def));
+        return String.format("redirect:%s", Lang.ifNull(request.getParameter(Custom.RequestParams.JUMP), def));
     }
     
     public Return success(Object result) {

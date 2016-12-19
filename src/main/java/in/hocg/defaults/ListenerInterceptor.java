@@ -1,6 +1,6 @@
 package in.hocg.defaults;
 
-import in.hocg.defaults.utils.Generate;
+import in.hocg.utils.Generate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 

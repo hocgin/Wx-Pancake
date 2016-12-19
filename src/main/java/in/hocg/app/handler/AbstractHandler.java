@@ -1,7 +1,7 @@
 package in.hocg.app.handler;
 
 import com.google.gson.Gson;
-import in.hocg.app.utils.log.Logs;
+import in.hocg.utils.Logs;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 import org.slf4j.Logger;
 

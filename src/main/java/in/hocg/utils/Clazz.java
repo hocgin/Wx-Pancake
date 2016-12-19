@@ -1,4 +1,4 @@
-package in.hocg.defaults.utils;
+package in.hocg.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

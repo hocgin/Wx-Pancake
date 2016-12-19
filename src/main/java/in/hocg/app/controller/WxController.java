@@ -2,8 +2,8 @@ package in.hocg.app.controller;
 
 import in.hocg.app.config.MenuConfig;
 import in.hocg.app.services.CoreService;
-import in.hocg.app.utils.log.Logs;
 import in.hocg.defaults.base.controller.BaseController;
+import in.hocg.utils.Logs;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;

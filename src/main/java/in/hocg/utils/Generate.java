@@ -1,4 +1,4 @@
-package in.hocg.defaults.utils;
+package in.hocg.utils;
 
 import com.google.gson.Gson;
 

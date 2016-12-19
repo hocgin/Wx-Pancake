@@ -16,8 +16,8 @@ public class BaseTable extends BaseBean {
 	
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@GeneratedValue(generator = "uuid2") //指定生成器名称
+	@GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator") //生成器名称，uuid生成类
 	private String id;
 	
 	@Column(name = "create_at")
