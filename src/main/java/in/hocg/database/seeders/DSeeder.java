@@ -1,4 +1,4 @@
-package in.hocg.database.seederes;
+package in.hocg.database.seeders;
 
 import in.hocg.app.bean.DictateBean;
 import in.hocg.app.dao.DictateDao;

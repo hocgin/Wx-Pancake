@@ -13,7 +13,7 @@ import org.springframework.web.context.request.NativeWebRequest;
  *         --------------------
  *         Created 16-8-24.
  *
- *  对异常进行处理
+ *  会拦截所有异常, 依照下面的方式对异常进行处理
  */
 @ControllerAdvice
 public class ExceptionsHandler {

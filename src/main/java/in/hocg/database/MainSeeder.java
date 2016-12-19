@@ -1,6 +1,6 @@
 package in.hocg.database;
 
-import in.hocg.database.seederes.DSeeder;
+import in.hocg.database.seeders.DSeeder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
