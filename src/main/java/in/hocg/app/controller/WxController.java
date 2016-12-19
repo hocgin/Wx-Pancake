@@ -1,8 +1,8 @@
 package in.hocg.app.controller;
 
+import in.hocg.app.base.WxBaseController;
 import in.hocg.app.config.MenuConfig;
 import in.hocg.app.services.CoreService;
-import in.hocg.defaults.base.controller.BaseController;
 import in.hocg.utils.Logs;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @RequestMapping("/wx")
-public class WxController extends BaseController {
+public class WxController extends WxBaseController {
 	protected Logger logger = Logs.get();
 	
 	@Autowired
