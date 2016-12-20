@@ -18,8 +18,14 @@ import javax.persistence.Table;
 @DynamicInsert//动态插入
 public class DictateBean extends SoftDeletedTable {
 	
+	public enum Type {
+		Text
+	}
+	
 	/**
 	 * 指令 [唯一,正则]
+	 * eg.
+	 * #XX -> XX
 	 */
 	@Column(name = "cmd")
 	private String cmd;

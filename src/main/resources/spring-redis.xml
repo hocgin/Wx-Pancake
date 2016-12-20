@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:cache="http://www.springframework.org/schema/cache"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <description>配置和Redis相关</description>
 
     <!-- 加载配置属性文件 -->
-    <context:property-placeholder ignore-unresolvable="true" location="classpath*:/config/redis-dev.properties" />
+    <context:property-placeholder
+            location="classpath:config/redis-dev.properties"
+            ignore-unresolvable="true"/>
 
     <!-- 开启缓存注解
         @CachePut，@Cacheable，@CacheEvict
@@ -15,7 +20,7 @@
     <cache:annotation-driven/>
 
     <!-- Redis 对象池 -->
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${redis.maxTotal}" />
         <property name="maxIdle" value="${redis.maxIdle}" />
         <property name="numTestsPerEvictionRun" value="${redis.numTestsPerEvictionRun}"/>
@@ -32,7 +37,7 @@
     </bean>
     <!-- jedis客户端连接工厂 -->
     <bean id="connectionFactory"  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
-        <property name="poolConfig" ref="jedisPoolConfig" />
+        <property name="poolConfig" ref="poolConfig" />
         <property name="port" value="${redis.master.port}" />
         <property name="hostName" value="${redis.master.host}" />
         <!--<property name="password" value="${redis.password}" />-->
@@ -42,5 +47,10 @@
     <!-- redisTemplate模板 -->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
+    </bean>
+
+    <!-- 配置缓存 -->
+    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg ref="redisTemplate" />
     </bean>
 </beans>

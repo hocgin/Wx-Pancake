@@ -12,7 +12,7 @@ import java.util.Date;
  * Created by hocgin on 16-12-18.
  */
 @MappedSuperclass
-public class BaseTable extends BaseBean {
+public abstract class BaseTable extends BaseBean {
 	
 	@Id
 	@Column(name = "id")

@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by hocgin on 16-12-18.
  */
 @Transactional
-public class SoftDeletedDao<T extends SoftDeletedTable> extends TableDao {
-	
+public abstract class SoftDeletedDao<T extends SoftDeletedTable> extends TableDao {
 	
 }

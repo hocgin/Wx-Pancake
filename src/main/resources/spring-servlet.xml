@@ -3,8 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <description>
         核心文件(不可更改),
@@ -12,10 +12,18 @@
     </description>
 
     <!-- 加载配置属性文件 -->
-    <context:property-placeholder ignore-unresolvable="true" location="classpath*:/config/spring.properties" />
+    <context:property-placeholder
+            location="classpath:config/spring.properties"
+            ignore-unresolvable="true"/>
 
     <!-- 扫描路径 -->
-    <context:component-scan base-package="${spring.scan.package}"/>
+    <context:component-scan base-package="in.hocg"/>
+
+    <!-- 默认静态资源不处理 -->
+    <mvc:default-servlet-handler />
+    <!-- 静态资源配置 -->
+    <!--<mvc:resources location="/assets/" mapping="/assets/**"/>-->
+
     <!-- 配置默认根视图 -->
     <mvc:view-controller path="/" view-name="index"/>
 
@@ -31,8 +39,6 @@
 
     <!--开启AOP注解-->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-    <!-- 静态资源配置 -->
-    <mvc:resources location="/assets/" mapping="/assets/**"/>
 
     <!-- 视图层配置 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

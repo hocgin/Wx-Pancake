@@ -50,4 +50,5 @@ public abstract class CurlDao {
 	public Session currentSession() {
 		return getSessionFactory().getCurrentSession();
 	}
+	
 }

@@ -1,9 +1,8 @@
 package in.hocg.app.controller;
 
+import in.hocg.app.params.N0Params;
 import in.hocg.defaults.base.controller.BaseController;
 import in.hocg.utils.Lang;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,15 +21,15 @@ import java.util.HashMap;
 @Controller
 public class MainController extends BaseController{
 	
-	@Autowired
-	RedisTemplate redisTemplate;
+//	@Autowired
+//	RedisTemplate redisTemplate;
 	
-    @RequestMapping(value = "index", method = RequestMethod.GET)
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(HttpServletRequest request) throws Exception {
         return redirectJump(request, "/index.jsp");
     }
     
-    @RequestMapping(value = "JSON", method = RequestMethod.GET)
+    @RequestMapping(value = "/JSON")
     @ResponseBody
     public HashMap<String, String> json() {
         HashMap<String, String> map = new HashMap<String, String>(){{
@@ -41,12 +40,24 @@ public class MainController extends BaseController{
         return map;
     }
 	
-	@RequestMapping(value = "e", method = RequestMethod.GET)
+	/**
+	 * 异常测试
+	 */
+	@RequestMapping(value = "/exp", method = RequestMethod.GET)
 	@ResponseBody
-	public void e() {
+	public void exp() {
 		if (true) {
 			throw Lang.makeThrow("测试异常");
 		}
+	}
+	
+	/**
+	 * 分页测试
+	 */
+	@RequestMapping(value = "/paging")
+	@ResponseBody
+	public void paging(N0Params params) {
+		System.out.println(params);
 	}
 
 }

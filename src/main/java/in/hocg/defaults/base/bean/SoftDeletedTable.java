@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by hocgin on 16-12-18.
  */
 @MappedSuperclass
-public class SoftDeletedTable extends BaseTable {
+public abstract class SoftDeletedTable extends BaseTable {
 	@Column(name = "delete_at")
 	private Date deleteAt;
 	

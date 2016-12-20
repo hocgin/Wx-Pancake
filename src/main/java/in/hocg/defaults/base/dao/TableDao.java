@@ -12,7 +12,7 @@ import java.util.Date;
  * Created by hocgin on 16-12-18.
  */
 @Transactional
-public class TableDao <T extends BaseTable> extends CurlDao {
+public abstract class TableDao <T extends BaseTable> extends CurlDao {
 	/**
 	 * 实体类
 	 */
