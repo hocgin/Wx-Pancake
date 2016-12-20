@@ -5,8 +5,17 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <description>
+        核心文件(不可更改),
+        如有配置需求更改 spring.properties
+    </description>
+
+    <!-- 加载配置属性文件 -->
+    <context:property-placeholder ignore-unresolvable="true" location="classpath*:/config/spring.properties" />
+
     <!-- 扫描路径 -->
-    <context:component-scan base-package="in.hocg"/>
+    <context:component-scan base-package="${spring.scan.package}"/>
     <!-- 配置默认根视图 -->
     <mvc:view-controller path="/" view-name="index"/>
 
@@ -19,14 +28,6 @@
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
-    <!-- 开启 Spring 任务调度
-            1. 同步任务
-            2. 异步任务
-    -->
-    <task:annotation-driven/>
-    <task:executor id="executor" pool-size="5" />
-    <task:scheduler id="scheduler" pool-size="10" />
 
     <!--开启AOP注解-->
     <aop:aspectj-autoproxy proxy-target-class="true"/>

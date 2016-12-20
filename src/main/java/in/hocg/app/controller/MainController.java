@@ -2,6 +2,8 @@ package in.hocg.app.controller;
 
 import in.hocg.defaults.base.controller.BaseController;
 import in.hocg.utils.Lang;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +21,10 @@ import java.util.HashMap;
  */
 @Controller
 public class MainController extends BaseController{
-
+	
+	@Autowired
+	RedisTemplate redisTemplate;
+	
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String index(HttpServletRequest request) throws Exception {
         return redirectJump(request, "/index.jsp");
