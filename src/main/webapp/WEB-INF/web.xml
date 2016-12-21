@@ -27,7 +27,10 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:spring-*.xml
+            classpath:spring-apps.xml,
+            classpath:spring-hibernate.cfg.xml,
+            classpath:spring-redis.xml,
+            classpath:spring-task.xml
         </param-value>
     </context-param>
 

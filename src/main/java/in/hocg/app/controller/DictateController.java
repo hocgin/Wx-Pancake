@@ -6,7 +6,6 @@ import in.hocg.defaults.base.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -19,7 +18,7 @@ public class DictateController extends BaseController {
 	@Autowired
 	DictateService dictateService;
 	
-	@RequestMapping(value = "/i", method = RequestMethod.GET)
+	@RequestMapping(value = "/i")
 	@ResponseBody
 	public Object i() {
 		DictateBean dictateBean = new DictateBean();
