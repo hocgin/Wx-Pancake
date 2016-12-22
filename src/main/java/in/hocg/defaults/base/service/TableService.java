@@ -12,15 +12,16 @@ public abstract class TableService<O extends BaseTable, T extends TableDao> exte
 	@Autowired
 	T dao;
 	
-	public T getDao() {
+	public T dao() {
 		return dao;
 	}
 	
-	public void setDao(T dao) {
-		this.dao = dao;
-	}
 	
 	public void insert(O obj) {
-		getDao().insert(obj);
+		dao().insert(obj);
+	}
+	
+	public void saveOrUpdate(O tableObj) {
+		dao().saveOrUpdate(tableObj);
 	}
 }

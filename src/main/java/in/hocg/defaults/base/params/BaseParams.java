@@ -1,7 +1,7 @@
 package in.hocg.defaults.base.params;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,10 +17,29 @@ public abstract class BaseParams implements Serializable {
 	 */
 	public final static String DESC = "desc";
 	
-	public Paging paging;
+	/**
+	 * 分页属性
+	 */
+	private PagingParams pagingParams;
 	
 	/**
 	 * 排序
 	 */
-	private Map<String, String> order = new LinkedHashMap<String, String>();
+	private Map<String, String> sort = new HashMap<>();
+	
+	public PagingParams getPaging() {
+		return pagingParams;
+	}
+	
+	public void setPaging(PagingParams pagingParams) {
+		this.pagingParams = pagingParams;
+	}
+	
+	public Map<String, String> getSort() {
+		return sort;
+	}
+	
+	public void setSort(Map<String, String> sort) {
+		this.sort = sort;
+	}
 }

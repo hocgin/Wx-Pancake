@@ -3,12 +3,10 @@ package in.hocg.app.controller;
 import in.hocg.app.ResourcesConfig;
 import in.hocg.app.config.MenuConfig;
 import in.hocg.app.config.Wx1Config;
-import in.hocg.app.dao.DictateDao;
 import in.hocg.plugin.task.TaskConfig;
 import in.hocg.test.SpringTest;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -24,9 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 })
 @ActiveProfiles("test")
 public class MainControllerTest extends SpringTest {
-	
-	@Autowired
-	private DictateDao dictateDao;
 	
 	@Before
 	@Override

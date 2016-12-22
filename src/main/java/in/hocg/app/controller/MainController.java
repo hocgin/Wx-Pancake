@@ -4,6 +4,7 @@ import in.hocg.app.params.N0Params;
 import in.hocg.defaults.base.controller.BaseController;
 import in.hocg.utils.Lang;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,8 +57,8 @@ public class MainController extends BaseController{
 	 */
 	@RequestMapping(value = "/paging")
 	@ResponseBody
-	public void paging(N0Params params) {
-		System.out.println(params);
+	public Object paging(@ModelAttribute N0Params params) {
+		return params;
 	}
 
 }

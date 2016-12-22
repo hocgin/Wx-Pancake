@@ -2,6 +2,7 @@ package in.hocg.app.services.impl;
 
 import in.hocg.app.handler.$Handler;
 import in.hocg.app.handler.ConsoleHandler;
+import in.hocg.app.handler.TestHandler;
 import in.hocg.app.services.CoreService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -47,6 +48,8 @@ public class CoreServiceImpl implements CoreService {
 	private ConsoleHandler consoleHandler;
 	@Autowired
 	private $Handler $handler;
+	@Autowired
+	private TestHandler testHandler;
 	
 	@PostConstruct
 	public void init() {
@@ -104,7 +107,12 @@ public class CoreServiceImpl implements CoreService {
 //				.event(WxConsts.EVT_SUBSCRIBE).handler(this.subscribeHandler)
 //				.end();
 //		// 默认,转发消息给客服人员
-		newRouter.rule().rContent("^#[^#]+").handler(this.$handler).end();
+		newRouter.rule() // #指令 处理器
+				.rContent("^#[^#]+")
+				.handler(this.$handler)
+				.next().rule()
+				.handler(this.testHandler)
+				.end();
 		this.router = newRouter;
 	}
 	

@@ -3,7 +3,6 @@ package in.hocg.app.controller;
 import in.hocg.app.base.WxBaseController;
 import in.hocg.app.config.MenuConfig;
 import in.hocg.app.services.CoreService;
-import in.hocg.utils.Logs;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -13,12 +12,10 @@ import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/wx")
 public class WxController extends WxBaseController {
-	protected Logger logger = Logs.get();
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
 	protected WxMpConfigStorage configStorage;
@@ -45,6 +42,79 @@ public class WxController extends WxBaseController {
 		return "index";
 	}
 	
+	
+	
+	
+	@RequestMapping(value = "core")
+	@ResponseBody
+	@PostMapping(produces = "application/xml; charset=UTF-8")
+	public String post(@RequestBody String requestBody, @RequestParam("signature") String signature,
+	                   @RequestParam(name = "encrypt_type", required = false) String encType,
+	                   @RequestParam(name = "msg_signature", required = false) String msgSignature,
+	                   @RequestParam("timestamp") String timestamp, @RequestParam("nonce") String nonce) {
+		this.logger.info(
+				"\n接收微信请求：[signature=[{}], encType=[{}], msgSignature=[{}],"
+						+ " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
+				signature, encType, msgSignature, timestamp, nonce, requestBody);
+		
+		if (!this.wxMpService.checkSignature(timestamp, nonce, signature)) {
+			throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
+		}
+		
+		String out = null;
+		if (encType == null) {
+			// 明文传输的消息
+			WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
+			WxMpXmlOutMessage outMessage = this.coreService.route(inMessage);
+			if (outMessage == null) {
+				return "";
+			}
+			
+			out = outMessage.toXml();
+		} else if ("aes".equals(encType)) {
+			// aes加密的消息
+			WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody,
+					this.configStorage, timestamp, nonce, msgSignature);
+			this.logger.debug("\n消息解密后内容为：\n{} ", inMessage.toString());
+			WxMpXmlOutMessage outMessage = this.coreService.route(inMessage);
+			if (outMessage == null) {
+				return "";
+			}
+			
+			out = outMessage.toEncryptedXml(this.configStorage);
+		}
+		
+		this.logger.debug("\n组装回复信息：{}", out);
+		
+		return out;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 微信公众号webservice主服务接口，提供与微信服务器的信息交互
 	 *
@@ -52,7 +122,7 @@ public class WxController extends WxBaseController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "core")
+	@RequestMapping(value = "corex")
 	public void wechatCore(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		response.setStatus(HttpServletResponse.SC_OK);

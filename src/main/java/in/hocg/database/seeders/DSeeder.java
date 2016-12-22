@@ -19,9 +19,9 @@ public class DSeeder implements Seeder {
 	@Override
 	public void run() {
 		DictateBean dirtateBean = new DictateBean();
-		dirtateBean.setCmd("#地址");
+		dirtateBean.setCmd("地址");
 		dirtateBean.setContent(">>");
-		dirtateBean.setType("Content");
+		dirtateBean.setType(DictateBean.Type.Text.name());
 		dictateDao.insert(dirtateBean);
 		System.out.println(" insert or update DB " + dictateDao);
 	}

@@ -11,4 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DictateService extends TableService<DictateBean, DictateDao> {
 	
+	public DictateBean fetch(String cmd) {
+		return dao().fetch(cmd);
+	}
 }
