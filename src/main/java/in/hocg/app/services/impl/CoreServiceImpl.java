@@ -1,9 +1,6 @@
 package in.hocg.app.services.impl;
 
-import in.hocg.app.handler.$Handler;
-import in.hocg.app.handler.ConsoleHandler;
-import in.hocg.app.handler.SubscribeHandler;
-import in.hocg.app.handler.TestHandler;
+import in.hocg.app.handler.*;
 import in.hocg.app.services.CoreService;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -54,6 +51,10 @@ public class CoreServiceImpl implements CoreService {
 	private TestHandler testHandler;
 	@Autowired
 	private SubscribeHandler subscribeHandler;
+	@Autowired
+	private FeedbackHandler feedbackHandler;
+	@Autowired
+	private RewardHandler rewardHandler;
 	
 	@PostConstruct
 	public void init() {
@@ -110,25 +111,39 @@ public class CoreServiceImpl implements CoreService {
 				// 日志记录
 				.rule().async(false)
 				.handler(this.consoleHandler)
-				// #固定指令 处理
-				.next().rule().async(false)
+				.next()
+				// 操作指令 #反馈
+				.rule().async(false)
+				.msgType(WxConsts.CUSTOM_MSG_TEXT)
+				.rContent("^#反馈\\s+.*")
+				.handler(this.feedbackHandler)
+				.end()
+				// #打赏 处理
+				.rule().async(false)
+				.msgType(WxConsts.CUSTOM_MSG_TEXT)
+				.rContent("^#打赏$")
+				.handler(this.rewardHandler)
+				.end()
+				// #指令 处理
+				.rule().async(false)
 				.msgType(WxConsts.CUSTOM_MSG_TEXT)
 				.rContent("^#[^#]+")
 				.handler(this.$handler)
-				// 操作指令
-				
+				.end()
 				// 关注事件
-				.end().rule().async(false)
+				.rule().async(false)
 				.msgType(WxConsts.XML_MSG_EVENT)
 				.event(WxConsts.EVT_SUBSCRIBE)
 				.handler(this.subscribeHandler)
+				.end()
 				// 取消关注事件
-				.end().rule().async(false)
+				.rule().async(false)
 				.msgType(WxConsts.XML_MSG_EVENT)
 				.event(WxConsts.EVT_UNSUBSCRIBE)
 				.handler(this.subscribeHandler)
+				.end()
 				// 默认处理
-				.end().rule().async(false)
+				.rule().async(false)
 				.handler(this.testHandler)
 				.end();
 		this.router = newRouter;

@@ -17,11 +17,10 @@ public class AppListener implements ApplicationListener<ContextRefreshedEvent> {
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		if (event.getApplicationContext().getParent() == null) { // 初始化SpringMVC后 ..
-			/**
-			 * 数据库数据加载时操作
-			 */
-			mainSeeder.handler();
-		}
+		/**
+		 * todo 若让 listener 和 servlet 都加载的spring-servlet话会执行两次
+		 * 数据库数据加载时操作
+		 */
+		mainSeeder.handler();
 	}
 }

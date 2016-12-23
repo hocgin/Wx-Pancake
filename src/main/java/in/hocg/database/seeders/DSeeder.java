@@ -21,14 +21,25 @@ public class DSeeder implements Seeder {
 		DictateBean dirtateBean = new DictateBean();
 		dirtateBean.setCmd("Help");
 		dirtateBean.setContent("你输入的指令有误, 请输入 #Help 查询更多指令");
-		dirtateBean.setType(DictateBean.Type.Text.name());
+		dirtateBean.setType(DictateBean.Type.Event.name());
 		dictateDao.insert(dirtateBean);
 		dirtateBean = new DictateBean();
 		dirtateBean.setCmd("关注");
 		dirtateBean.setContent("感谢关注.");
 		dirtateBean.setType(DictateBean.Type.Event.name());
 		dictateDao.insert(dirtateBean);
-		
+		dirtateBean = new DictateBean();
+		dirtateBean.setCmd("反馈");
+		dirtateBean.setContent("感谢您的反馈～");
+		dirtateBean.setType(DictateBean.Type.Event.name());
+		dictateDao.insert(dirtateBean);
+		dirtateBean = new DictateBean();
+		dirtateBean.setCmd("Help");
+		dirtateBean.setContent("《相关指令》\n" +
+				"#Help\n" +
+				"#反馈 反馈内容");
+		dirtateBean.setType(DictateBean.Type.Text.name());
+		dictateDao.insert(dirtateBean);
 		
 		System.out.println(" insert or update DB " + dictateDao);
 	}
