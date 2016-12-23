@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Created by hocgin on 16-12-19.
+ * org.slf4j.log4j
+ * org.slf4j.slf4j-api
+ * org.slf4j.slf4j-log4j12
  */
 public class Logs {
 	/**

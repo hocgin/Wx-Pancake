@@ -17,9 +17,10 @@ import static org.hibernate.criterion.Restrictions.eq;
 public class DictateDao extends SoftDeletedDao<DictateBean> {
 	
 	
-	public DictateBean fetch(String cmd) {
+	public DictateBean fetch(String cmd, DictateBean.Type type) {
 		DetachedCriteria criteria = criteria().add(eq("cmd", cmd))
-				.add(Restrictions.isNull("deleteAt"));
+				.add(Restrictions.isNull("deleteAt"))
+				.add(Restrictions.eq("type", type.name()));
 		return (DictateBean) uniqueCriteria(criteria);
 	}
 	

@@ -42,79 +42,6 @@ public class WxController extends WxBaseController {
 		return "index";
 	}
 	
-	
-	
-	
-	@RequestMapping(value = "core")
-	@ResponseBody
-	@PostMapping(produces = "application/xml; charset=UTF-8")
-	public String post(@RequestBody String requestBody, @RequestParam("signature") String signature,
-	                   @RequestParam(name = "encrypt_type", required = false) String encType,
-	                   @RequestParam(name = "msg_signature", required = false) String msgSignature,
-	                   @RequestParam("timestamp") String timestamp, @RequestParam("nonce") String nonce) {
-		this.logger.info(
-				"\n接收微信请求：[signature=[{}], encType=[{}], msgSignature=[{}],"
-						+ " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
-				signature, encType, msgSignature, timestamp, nonce, requestBody);
-		
-		if (!this.wxMpService.checkSignature(timestamp, nonce, signature)) {
-			throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
-		}
-		
-		String out = null;
-		if (encType == null) {
-			// 明文传输的消息
-			WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
-			WxMpXmlOutMessage outMessage = this.coreService.route(inMessage);
-			if (outMessage == null) {
-				return "";
-			}
-			
-			out = outMessage.toXml();
-		} else if ("aes".equals(encType)) {
-			// aes加密的消息
-			WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody,
-					this.configStorage, timestamp, nonce, msgSignature);
-			this.logger.debug("\n消息解密后内容为：\n{} ", inMessage.toString());
-			WxMpXmlOutMessage outMessage = this.coreService.route(inMessage);
-			if (outMessage == null) {
-				return "";
-			}
-			
-			out = outMessage.toEncryptedXml(this.configStorage);
-		}
-		
-		this.logger.debug("\n组装回复信息：{}", out);
-		
-		return out;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * 微信公众号webservice主服务接口，提供与微信服务器的信息交互
 	 *
@@ -122,8 +49,8 @@ public class WxController extends WxBaseController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "corex")
-	public void wechatCore(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping(value = "core")
+	public void weChatCore(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		response.setStatus(HttpServletResponse.SC_OK);
 		
@@ -152,7 +79,8 @@ public class WxController extends WxBaseController {
 			// 明文传输的消息
 			WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(request.getInputStream());
 			WxMpXmlOutMessage outMessage = this.coreService.route(inMessage);
-			response.getWriter().write(outMessage.toXml());
+			String toXml = outMessage.toXml();
+			response.getWriter().write(toXml);
 			return;
 		}
 		

@@ -19,10 +19,17 @@ public class DSeeder implements Seeder {
 	@Override
 	public void run() {
 		DictateBean dirtateBean = new DictateBean();
-		dirtateBean.setCmd("地址");
-		dirtateBean.setContent(">>");
+		dirtateBean.setCmd("Help");
+		dirtateBean.setContent("你输入的指令有误, 请输入 #Help 查询更多指令");
 		dirtateBean.setType(DictateBean.Type.Text.name());
 		dictateDao.insert(dirtateBean);
+		dirtateBean = new DictateBean();
+		dirtateBean.setCmd("关注");
+		dirtateBean.setContent("感谢关注.");
+		dirtateBean.setType(DictateBean.Type.Event.name());
+		dictateDao.insert(dirtateBean);
+		
+		
 		System.out.println(" insert or update DB " + dictateDao);
 	}
 }

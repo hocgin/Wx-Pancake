@@ -25,9 +25,9 @@ public class $Handler implements WxMpMessageHandler {
 	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
 		String content = wxMessage.getContent().trim();
 		content = content.substring(1, content.length());
-		DictateBean dictateBean = dictateService.fetch(content);
+		DictateBean dictateBean = dictateService.fetch(content, DictateBean.Type.Text);
 		if (dictateBean == null) {
-			dictateBean = dictateService.fetch("Help");
+			dictateBean = dictateService.fetch("Help", DictateBean.Type.Text);
 		}
 		WxMpXmlOutMessage message = null;
 		if (dictateBean.getType().equals(DictateBean.Type.Text.name())) { // 指令以文本方式处理

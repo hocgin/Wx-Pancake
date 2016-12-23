@@ -2,7 +2,6 @@ package in.hocg.defaults;
 
 import in.hocg.utils.Logs;
 import org.slf4j.Logger;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -15,7 +14,7 @@ import org.springframework.web.context.request.NativeWebRequest;
  *
  *  会拦截所有异常, 依照下面的方式对异常进行处理
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class ExceptionsHandler {
 	Logger log = Logs.get();
 	

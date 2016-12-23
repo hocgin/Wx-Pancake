@@ -19,7 +19,8 @@ import javax.persistence.Table;
 public class DictateBean extends SoftDeletedTable {
 	
 	public enum Type {
-		Text
+		Text,
+		Event
 	}
 	
 	/**

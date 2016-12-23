@@ -2,8 +2,10 @@ package in.hocg.app.services.impl;
 
 import in.hocg.app.handler.$Handler;
 import in.hocg.app.handler.ConsoleHandler;
+import in.hocg.app.handler.SubscribeHandler;
 import in.hocg.app.handler.TestHandler;
 import in.hocg.app.services.CoreService;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -50,6 +52,8 @@ public class CoreServiceImpl implements CoreService {
 	private $Handler $handler;
 	@Autowired
 	private TestHandler testHandler;
+	@Autowired
+	private SubscribeHandler subscribeHandler;
 	
 	@PostConstruct
 	public void init() {
@@ -99,18 +103,32 @@ public class CoreServiceImpl implements CoreService {
 	public void refreshRouter() {
 		final WxMpMessageRouter newRouter = new WxMpMessageRouter(
 				this.wxMpService);
-		// todo 对消息进行处理
-		// 记录所有事件的日志
-		newRouter.rule().handler(this.consoleHandler).next();
-//		// 关注事件
-//		newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
-//				.event(WxConsts.EVT_SUBSCRIBE).handler(this.subscribeHandler)
-//				.end();
-//		// 默认,转发消息给客服人员
-		newRouter.rule() // #指令 处理器
+		/**
+		 * - 微信用户的 OpenId 是唯一的
+		 */
+		newRouter
+				// 日志记录
+				.rule().async(false)
+				.handler(this.consoleHandler)
+				// #固定指令 处理
+				.next().rule().async(false)
+				.msgType(WxConsts.CUSTOM_MSG_TEXT)
 				.rContent("^#[^#]+")
 				.handler(this.$handler)
-				.next().rule()
+				// 操作指令
+				
+				// 关注事件
+				.end().rule().async(false)
+				.msgType(WxConsts.XML_MSG_EVENT)
+				.event(WxConsts.EVT_SUBSCRIBE)
+				.handler(this.subscribeHandler)
+				// 取消关注事件
+				.end().rule().async(false)
+				.msgType(WxConsts.XML_MSG_EVENT)
+				.event(WxConsts.EVT_UNSUBSCRIBE)
+				.handler(this.subscribeHandler)
+				// 默认处理
+				.end().rule().async(false)
 				.handler(this.testHandler)
 				.end();
 		this.router = newRouter;
